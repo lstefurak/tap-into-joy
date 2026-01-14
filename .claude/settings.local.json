@@ -7,7 +7,9 @@
       "Bash(npm run deploy:*)",
       "Bash(gh repo view:*)",
       "Bash(git fetch:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd development guide and update email\n\n- Add DEVELOPMENT.md with project documentation\n- Update contact email to tappingintojoy@gmail.com\n- Document tech stack, setup, deployment process\n- Include TODO list for future enhancements\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
