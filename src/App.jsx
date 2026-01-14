@@ -184,8 +184,8 @@ function App() {
           Have questions? I'd love to hear from you. Reach out and let's start
           your journey to emotional freedom.
         </p>
-        <a href="mailto:sue@tapintojoy.com" className="contact-email">
-          sue@tapintojoy.com
+        <a href="mailto:tappingintojoy@gmail.com" className="contact-email">
+          tappingintojoy@gmail.com
         </a>
       </section>
 
