@@ -1,0 +1,135 @@
+:root {
+  /* Flower/Nature Color Palette */
+  --color-cream: #FFF9F5;
+  --color-blush: #F8E8E0;
+  --color-rose: #E8C4C0;
+  --color-dusty-rose: #C9A9A6;
+  --color-sage: #9CAF88;
+  --color-sage-light: #B8C9A8;
+  --color-forest: #5C7A5C;
+  --color-earth: #8B7355;
+  --color-text: #4A4A4A;
+  --color-text-light: #6B6B6B;
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --section-padding: 5rem 2rem;
+  --container-max: 1200px;
+
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--color-text);
+  background-color: var(--color-cream);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-cream);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--color-forest);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+a {
+  color: var(--color-forest);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-sage);
+}
+
+button, .btn {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-forest) 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(92, 122, 92, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(92, 122, 92, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-forest);
+  border: 2px solid var(--color-sage);
+}
+
+.btn-secondary:hover {
+  background: var(--color-sage-light);
+  color: var(--color-forest);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Decorative flower elements */
+.flower-decoration {
+  position: absolute;
+  opacity: 0.15;
+  pointer-events: none;
+  font-size: 8rem;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--color-rose);
+  color: var(--color-forest);
+}
