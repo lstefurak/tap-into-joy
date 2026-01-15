@@ -59,7 +59,7 @@ function App() {
         <div className="about-content">
           <div className="about-image">
             <img
-              src="/sue-doherty.jpg"
+              src={`${import.meta.env.BASE_URL}sue-doherty.jpg`}
               alt="Sue Doherty - EFT Practitioner"
               className="about-photo"
             />
