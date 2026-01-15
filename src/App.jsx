@@ -58,9 +58,11 @@ function App() {
       <section className="about" id="about">
         <div className="about-content">
           <div className="about-image">
-            <div className="about-image-placeholder">
-              🌷
-            </div>
+            <img
+              src="/sue-doherty.jpg"
+              alt="Sue Doherty - EFT Practitioner"
+              className="about-photo"
+            />
           </div>
           <div className="about-text">
             <h2>{content.about.heading}</h2>
