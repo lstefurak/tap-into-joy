@@ -35,7 +35,7 @@ export const content = {
       {
         icon: "🌸",
         title: "Individual Session",
-        description: "A full 60-minute one-on-one tapping session focused on your specific concerns and goals.",
+        description: "A full 90-minute one-on-one tapping session focused on your specific concerns and goals.",
         price: "$95"
       },
       {
