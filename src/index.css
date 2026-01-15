@@ -1,13 +1,13 @@
 :root {
-  /* Flower/Nature Color Palette */
-  --color-cream: #FFF9F5;
-  --color-blush: #F8E8E0;
-  --color-rose: #E8C4C0;
-  --color-dusty-rose: #C9A9A6;
-  --color-sage: #9CAF88;
-  --color-sage-light: #B8C9A8;
-  --color-forest: #5C7A5C;
-  --color-earth: #8B7355;
+  /* Professional Blue-Green Color Palette */
+  --color-bg-dark: #061A2D;        /* hero, nav, footer */
+  --color-primary: #0B3C5D;       /* main brand blue */
+  --color-accent-blue: #1F7ED6;   /* CTA, links, highlights */
+  --color-accent-teal: #007C7A;   /* secondary buttons */
+  --color-green-dark: #0B4F3A;    /* grounding sections */
+  --color-green-main: #0F6B4A;    /* badges, UI accents */
+  --color-green-bright: #1FA37A;  /* hover states */
+  --color-bg-light: #F5F7F4;      /* content backgrounds */
   --color-text: #4A4A4A;
   --color-text-light: #6B6B6B;
 
@@ -23,7 +23,7 @@
   line-height: 1.6;
   font-weight: 400;
   color: var(--color-text);
-  background-color: var(--color-cream);
+  background-color: var(--color-bg-light);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -39,14 +39,14 @@
 
 body {
   min-height: 100vh;
-  background-color: var(--color-cream);
+  background-color: var(--color-bg-light);
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-serif);
   font-weight: 500;
   line-height: 1.2;
-  color: var(--color-forest);
+  color: var(--color-green-dark);
 }
 
 h1 {
@@ -67,13 +67,13 @@ p {
 }
 
 a {
-  color: var(--color-forest);
+  color: var(--color-green-dark);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: var(--color-sage);
+  color: var(--color-green-bright);
 }
 
 button, .btn {
@@ -88,7 +88,7 @@ button, .btn {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-forest) 100%);
+  background: linear-gradient(135deg, var(--color-green-main) 0%, var(--color-green-dark) 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(92, 122, 92, 0.3);
 }
@@ -100,13 +100,13 @@ button, .btn {
 
 .btn-secondary {
   background: transparent;
-  color: var(--color-forest);
-  border: 2px solid var(--color-sage);
+  color: var(--color-green-dark);
+  border: 2px solid var(--color-green-main);
 }
 
 .btn-secondary:hover {
-  background: var(--color-sage-light);
-  color: var(--color-forest);
+  background: var(--color-green-bright);
+  color: var(--color-green-dark);
 }
 
 .container {
@@ -130,6 +130,6 @@ html {
 
 /* Selection styling */
 ::selection {
-  background-color: var(--color-rose);
-  color: var(--color-forest);
+  background-color: var(--color-accent-teal);
+  color: var(--color-green-dark);
 }
