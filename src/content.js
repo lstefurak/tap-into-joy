@@ -40,7 +40,7 @@ export const content = {
         icon: photos.serviceDiscovery,
         title: "Discovery Session",
         description: "A 30-minute introductory session to explore EFT and discuss your goals. Perfect for first-time clients.",
-        price: "$50"
+        price: "complementary"
       },
       {
         icon: photos.serviceIndividual,
@@ -50,9 +50,9 @@ export const content = {
       },
       {
         icon: photos.servicePackage,
-        title: "Package of 4",
-        description: "Four 60-minute sessions for deeper, sustained transformation. Includes email support between sessions.",
-        price: "$340"
+        title: "Package of 2",
+        description: "Two 90-minute sessions for deeper, sustained transformation. Includes email support between sessions.",
+        price: "$150"
       }
     ]
   },
