@@ -50,7 +50,7 @@ export const content = {
       },
       {
         icon: photos.servicePackage,
-        title: "Package of 4",
+        title: "Package of 2",
         description: "Two 90-minute sessions for deeper, sustained transformation. Includes email support between sessions.",
         price: "$150"
       }
