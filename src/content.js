@@ -1,6 +1,16 @@
 // Website Content Configuration
 // Edit this file to update text content throughout the site
 
+// Photo filenames
+export const photos = {
+  heroLeft: "hero-left.jpg",
+  heroRight: "hero-right.jpg",
+  serviceDiscovery: "service-discovery.jpg",
+  serviceIndividual: "service-individual.jpg",
+  servicePackage: "service-package.jpg",
+  about: "sue-doherty.jpg"
+}
+
 export const content = {
   // About Section - Sue's Bio
   about: {
@@ -27,19 +37,19 @@ export const content = {
     subheading: "Choose the session type that best fits your needs. All sessions are conducted virtually via Zoom for your convenience.",
     offerings: [
       {
-        icon: "🌱",
+        icon: photos.serviceDiscovery,
         title: "Discovery Session",
         description: "A 30-minute introductory session to explore EFT and discuss your goals. Perfect for first-time clients.",
         price: "$50"
       },
       {
-        icon: "🌸",
+        icon: photos.serviceIndividual,
         title: "Individual Session",
         description: "A full 90-minute one-on-one tapping session focused on your specific concerns and goals.",
         price: "$95"
       },
       {
-        icon: "🌻",
+        icon: photos.servicePackage,
         title: "Package of 4",
         description: "Four 60-minute sessions for deeper, sustained transformation. Includes email support between sessions.",
         price: "$340"
