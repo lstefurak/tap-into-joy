@@ -5,9 +5,9 @@
 export const photos = {
   heroLeft: "hero-left.jpg",
   heroRight: "hero-right.jpg",
-  serviceDiscovery: "service-discovery.jpg",
-  serviceIndividual: "service-individual.jpg",
-  servicePackage: "service-package.jpg",
+  serviceDiscovery: "white-rose.jpg",
+  serviceIndividual: "white-orchid.jpg",
+  servicePackage: "white-dogwood.jpg",
   about: "sue-doherty.jpg"
 }
 
