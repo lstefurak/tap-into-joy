@@ -87,8 +87,17 @@
 
 .hero-decoration {
   position: absolute;
-  font-size: 15rem;
-  opacity: 0.08;
+  opacity: 0.15;
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.hero-decoration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .hero-decoration.left {
@@ -178,8 +187,19 @@
 }
 
 .service-icon {
-  font-size: 3.5rem;
   margin-bottom: 1.5rem;
+  width: 120px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.service-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .service-card h3 {
@@ -330,6 +350,7 @@
   }
 
   .hero-decoration {
-    font-size: 8rem;
+    width: 200px;
+    height: 200px;
   }
 }

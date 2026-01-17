@@ -27,19 +27,19 @@ export const content = {
     subheading: "Choose the session type that best fits your needs. All sessions are conducted virtually via Zoom for your convenience.",
     offerings: [
       {
-        icon: "🌱",
+        icon: "service-discovery.jpg",
         title: "Discovery Session",
         description: "A 30-minute introductory session to explore EFT and discuss your goals. Perfect for first-time clients.",
         price: "$50"
       },
       {
-        icon: "🌸",
+        icon: "service-individual.jpg",
         title: "Individual Session",
         description: "A full 90-minute one-on-one tapping session focused on your specific concerns and goals.",
         price: "$95"
       },
       {
-        icon: "🌻",
+        icon: "service-package.jpg",
         title: "Package of 4",
         description: "Four 60-minute sessions for deeper, sustained transformation. Includes email support between sessions.",
         price: "$340"

@@ -35,8 +35,12 @@ function App() {
 
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-decoration left">🌸</div>
-        <div className="hero-decoration right">🌿</div>
+        <div className="hero-decoration left">
+          <img src={`${import.meta.env.BASE_URL}hero-left.jpg`} alt="Hero decoration" />
+        </div>
+        <div className="hero-decoration right">
+          <img src={`${import.meta.env.BASE_URL}hero-right.jpg`} alt="Hero decoration" />
+        </div>
         <div className="hero-content">
           <p className="hero-tagline">{content.hero.tagline}</p>
           <h1>{content.hero.title}</h1>
@@ -82,7 +86,9 @@ function App() {
         <div className="services-grid">
           {content.services.offerings.map((service, index) => (
             <div className="service-card" key={index}>
-              <div className="service-icon">{service.icon}</div>
+              <div className="service-icon">
+                <img src={`${import.meta.env.BASE_URL}${service.icon}`} alt={service.title} />
+              </div>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
               <div className="service-price">{service.price}</div>
