@@ -3,6 +3,10 @@
 Site is hosted at:
 https://lstefurak.github.io/tap-into-joy/
 
+# Sue's notes
+we use the pencil icon t update the read me
+we use the commit button to save the changes
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
