@@ -39,7 +39,7 @@ export const content = {
       {
         icon: photos.serviceDiscovery,
         title: "Discovery Session",
-        description: "A 30-minute discovery session to explore EFT and discuss your goals. Perfect for first-time clients.",
+        description: "A 30-minute discovery session to discuss your goals and how EFT helps. Perfect for first-time clients.",
         price: "complementary"
       },
       {
