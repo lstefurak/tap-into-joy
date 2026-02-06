@@ -45,8 +45,8 @@ export const content = {
       {
         icon: photos.serviceIndividual,
         title: "Individual Session",
-        description: "A full 90-minute one-on-one tapping session focused on your specific concerns and goals.",
-        price: "$95"
+        description: "A full 60-minute one-on-one tapping session focused on your specific concerns and goals.",
+        price: "$75"
       },
       {
         icon: photos.servicePackage,
