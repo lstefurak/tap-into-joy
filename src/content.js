@@ -3,8 +3,8 @@
 
 // Photo filenames
 export const photos = {
-  heroLeft: "hero-left.jpg",
-  heroRight: "hero-right.jpg",
+  heroLeft: "white-rose.jpg",
+  heroRight: "white-dogwood.jpg",
   serviceDiscovery: "white-rose.jpg",
   serviceIndividual: "white-orchid.jpg",
   servicePackage: "white-dogwood.jpg",
