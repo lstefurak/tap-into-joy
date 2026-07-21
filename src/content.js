@@ -17,8 +17,8 @@ export const content = {
     heading: "Meet Sue Doherty",
     paragraphs: [
       "Welcome! I'm Sue Doherty, a clinical certified EFT (Emotional Freedom Techniques) practitioner dedicated to helping you find peace, clarity, and emotional regulation",
-      "EFT Tapping combines ancient Chinese acupressure with modern psychology to help release emotional blocks, reduce stress, and transform limiting beliefs. Through our sessions together, you'll learn powerful tools to navigate life's challenges with greater ease and resilience.",
-      "Whether you're dealing with anxiety, past trauma, relationship issues, or simply seeking personal growth, I'm here to guide you on your journey to emotional wellness."
+      "EFT Tapping combines ancient Chinese acupressure with modern psychology to help release emotional blocks, reduce stress, and transform limiting beliefs. Through our sessions together, you'll learn powerful tools to down-regulate anxiety so you can navigate life's life's ups and downs.",
+      "Whether you're dealing with relationship issues, anxiety, past trauma, or simply seeking personal growth, I'm here to work with you to emotional wellness."
     ]
   },
 
