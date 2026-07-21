@@ -46,13 +46,13 @@ export const content = {
         icon: photos.serviceIndividual,
         title: "Individual Session",
         description: "A full 60-minute one-on-one tapping session focused on your specific concerns and goals.",
-        price: "$75"
+        price: "$100."
       },
       {
         icon: photos.servicePackage,
         title: "Package of 2",
         description: "Two 90-minute sessions for deeper, sustained transformation. Includes email support between sessions.",
-        price: "$150"
+        price: "$200."
       }
     ]
   },
