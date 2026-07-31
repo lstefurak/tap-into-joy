@@ -38,20 +38,20 @@ export const content = {
     offerings: [
       {
         icon: photos.serviceDiscovery,
-        title: "Discovery Session",
-        description: "A 30-minute discovery session to discuss your goals and how EFT helps. Perfect for first-time clients.",
+        title: "Discovery Call",
+        description: "A 15-minute phone call to discuss your goalor goals.",
         price: "complementary"
       },
       {
         icon: photos.serviceIndividual,
         title: "Individual Session",
-        description: "A full 60-minute one-on-one tapping session focused on your specific concerns and goals.",
-        price: "$100."
+        description: "A 3 month offer addressing your specific concerns and goals.",
+        price: "$5,000."
       },
       {
         icon: photos.servicePackage,
         title: "Package of 2",
-        description: "Two 90-minute sessions for deeper, sustained transformation. Includes email support between sessions.",
+        description: "A 6th month container to stabilize your transformation into your new normal.",
         price: "$200."
       }
     ]
