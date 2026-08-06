@@ -1,0 +1,139 @@
+name: Fix content typos
+
+# Safety net for edits to src/content.js.
+#
+# If a deploy fails, this repairs the file, checks that the site builds again,
+# pushes the fix and redeploys — so a stray quote mark doesn't take the site
+# down. If it can't fix the problem, it opens an issue explaining what's wrong
+# in plain language instead of guessing.
+
+on:
+  workflow_run:
+    workflows: ["Deploy to GitHub Pages"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+concurrency:
+  group: fix-content
+
+jobs:
+  fix:
+    # Only after a failed deploy of main — a successful deploy needs no help.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'failure' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # Without this, a fix that somehow still fails could fix-and-push forever.
+      - name: Stop if the last commit was already an automatic fix
+        id: guard
+        run: |
+          if git log -1 --pretty=%s | grep -q '\[auto-fix\]'; then
+            echo "The previous commit was already an automatic fix. Stopping here."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node
+        if: steps.guard.outputs.proceed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.proceed == 'true'
+        run: npm ci
+
+      # Quote marks and commas — the things that actually break the build.
+      - name: Repair punctuation
+        if: steps.guard.outputs.proceed == 'true'
+        continue-on-error: true
+        run: node scripts/fix-content.mjs src/content.js 2>&1 | tee repair-report.txt
+
+      # Spelling — cosmetic, but free to fix while we're here.
+      - name: Correct spelling
+        if: steps.guard.outputs.proceed == 'true'
+        continue-on-error: true
+        uses: crate-ci/typos@v1.49.0
+        with:
+          files: src/content.js
+          write_changes: true
+
+      - name: Check the site still builds
+        id: build
+        if: steps.guard.outputs.proceed == 'true'
+        continue-on-error: true
+        run: npm run build
+
+      - name: Commit and push the fix
+        id: push
+        if: steps.guard.outputs.proceed == 'true' && steps.build.outcome == 'success'
+        run: |
+          if git diff --quiet -- src/content.js; then
+            echo "Nothing needed fixing in src/content.js."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content.js
+          git commit -m "[auto-fix] Correct typos in content.js"
+          git push origin main
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      # Pushes made by Actions don't start other workflows, so ask explicitly.
+      - name: Redeploy the site
+        if: steps.push.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run "Deploy to GitHub Pages" --ref main
+
+      - name: Explain what needs a person
+        if: steps.guard.outputs.proceed == 'true' && steps.build.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          title="The website needs a small manual fix"
+          report="$(cat repair-report.txt 2>/dev/null || echo 'No details available.')"
+
+          cat > issue-body.md <<EOF
+          The website didn't rebuild after the last change to the text, and it couldn't
+          be repaired automatically. **The live site is still showing the previous
+          version, so visitors aren't seeing anything broken.**
+
+          Here's what was found:
+
+          \`\`\`
+          ${report}
+          \`\`\`
+
+          This is almost always a missing quote mark or a missing comma in
+          \`src/content.js\`. Every piece of text needs a quote mark at both the start
+          and the end, and every line in a list needs a comma after it except the last
+          one.
+
+          The run that failed: ${RUN_URL:-see the Actions tab}
+          EOF
+
+          existing="$(gh issue list --state open --search "in:title \"$title\"" \
+            --json number,title --jq "map(select(.title == \"$title\")) | .[0].number // empty")"
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file issue-body.md
+          else
+            gh issue create --title "$title" --body-file issue-body.md
+          fi

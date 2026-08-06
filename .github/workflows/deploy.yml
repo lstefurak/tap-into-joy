@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  # Lets the "Fix content typos" workflow redeploy after it repairs the text.
+  workflow_dispatch:
 
 permissions:
   contents: write
