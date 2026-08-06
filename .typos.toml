@@ -1,0 +1,22 @@
+# Settings for `typos`, the spell checker that fixes src/content.js automatically.
+# https://github.com/crate-ci/typos
+#
+# `typos` is deliberately cautious: it only changes words that are unambiguous
+# misspellings, so names like Doherty, NIMH and Calendly are already safe.
+#
+# If it ever "corrects" a word that was actually right, add it below and it will
+# be left alone from then on.
+
+[default]
+locale = "en-us"
+
+[default.extend-identifiers]
+# Names and codes to leave exactly as written, e.g.:
+# Doherty = "Doherty"
+
+[default.extend-words]
+# Ordinary words to leave exactly as written, e.g.:
+# tappin = "tappin"
+
+[files]
+extend-exclude = ["package-lock.json", "dist/"]

@@ -47,6 +47,37 @@ To swap a photo:
 
 If you're just replacing a photo with a new one of the *same name* (e.g. uploading a new `sue-doherty.jpg`), you can skip step 3 entirely — just re-upload the file and GitHub will ask if you want to overwrite it.
 
+## If you make a mistake
+
+There's a safety net. If a change to `src/content.js` stops the site from
+rebuilding, a job runs automatically and tries to repair it — it fixes a missing
+quote mark, a missing comma, the curly “smart quotes” you get from pasting out of
+Word or email, and common misspellings. If the repair works, the fix is committed
+for you and the site redeploys. You don't have to do anything.
+
+While all this is happening the live site keeps showing the previous version, so
+visitors never see a broken page.
+
+If it *can't* work out the fix, it opens an **Issue** on this repository
+explaining what's wrong in plain English, rather than guessing at your words. You
+can check for one under the **Issues** tab.
+
+### For maintainers
+
+- Workflow: `.github/workflows/fix-content.yml`, triggered by a failed run of the
+  deploy workflow on `main`.
+- Punctuation repair: `scripts/fix-content.mjs` (run locally with `npm run fix:content`).
+  It parses the file with `acorn`, and keeps a candidate fix only if it moves the
+  parser further into the file — so it can't quietly mangle text. If it can't
+  fully repair the file, it writes nothing.
+- Spelling: [`typos`](https://github.com/crate-ci/typos), configured in `.typos.toml`.
+  It only rewrites unambiguous, known misspellings, which is why it leaves names
+  like *Doherty*, *NIMH* and *Calendly* alone. The trade-off is that it won't catch
+  every misspelling — invented or truncated words (`neuroplasticit`) pass through.
+  If one ever gets "corrected" wrongly, add it to `.typos.toml`.
+- The workflow never pushes a change unless `npm run build` passes first, and it
+  won't retry a commit that's already marked `[auto-fix]`.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
