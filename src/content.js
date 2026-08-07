@@ -16,8 +16,8 @@ export const content = {
   about: {
     heading: "Meet Sue Doherty",
     paragraphs: [
-      "Welcome! I'm Sue Doherty, a certified clinical EFT (Emotional Freedom Techniques) practitioner dedicated to helping you to emotional regulation. Find the peace within yourself, see your limiting beliefs clearly, and step into your power.",
-      "Sue's work as a neuroscientist at NIMH was foundational to her linking spiritual development with neuroplasticit. EFT technique allowed her me to release emotional blocks and shine as a premium coach. Through your sessions with Sue, you'll use the tools to down-regulate anxiety, overwhelm, fear and self-doubt so you too can step into your own transformation."
+      "Welcome! I'm Sue Doherty, a certified clinical EFT practitioner dedicated to helping you to gain emotional regulation. I found peace within myself, saw my limiting beliefs so clearly that I stepped into my power and you can too.",
+      "My work as a neuroscientist at NIMH was foundational to linking spiritual development with neuroplasticity. The EFT technique allowed me to release emotional blocks and shine as a premium coach. Through your sessions, you'll use the tools to down-regulate anxiety, overwhelm, fear or self-doubt so you too can transform."
     ]
   },
 
