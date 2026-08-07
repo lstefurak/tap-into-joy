@@ -33,7 +33,7 @@ export const content = {
   // Services
   services: {
     heading: "Services",
-    subheading: "Choose the session type that best fits your needs. All sessions are conducted virtually via Zoom for your convenience.",
+    subheading: "Choose the container that best fits your needs.",
     offerings: [
       {
         icon: photos.serviceDiscovery,
@@ -44,7 +44,7 @@ export const content = {
       {
         icon: photos.serviceIndividual,
         title: "3 months",
-        description: "A 3 month conatainer to see seeshifts in your transformation.",
+        description: "A 3 month conatainer to see the shifts in your transformation.",
         price: "$5,000."
       },
       {
