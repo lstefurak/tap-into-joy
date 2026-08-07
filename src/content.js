@@ -44,13 +44,13 @@ export const content = {
       {
         icon: photos.serviceIndividual,
         title: "3 months",
-        description: "A 3 month container to see the shifts in your transformation.",
+        description: "A 3 month container will see shifts in your transformation.",
         price: "$5,000."
       },
       {
         icon: photos.servicePackage,
         title: "6 months",
-        description: "A 6th month container to stabilize your transformation into your new normal.",
+        description: "A 6th month container stabilizes your transformation into your new normal.",
         price: "$10,000."
       }
     ]
