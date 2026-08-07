@@ -37,28 +37,28 @@ export const content = {
     offerings: [
       {
         icon: photos.serviceDiscovery,
-        title: "Discovery Call",
-        description: "A 15-minute phone call to discuss your goalor goals.",
-        price: "complementary"
+        title: "Discovery Consultation",
+        description: "A phone call to discuss your goals.",
+        price: "$500"
       },
       {
         icon: photos.serviceIndividual,
-        title: "Individual Session",
-        description: "A 3 month offer addressing your specific concerns and goals.",
+        title: "3 months",
+        description: "A 3 month conatainer to see seeshifts in your transformation.",
         price: "$5,000."
       },
       {
         icon: photos.servicePackage,
-        title: "Package of 2",
+        title: "6 months",
         description: "A 6th month container to stabilize your transformation into your new normal.",
-        price: "$200."
+        price: "$10,000."
       }
     ]
   },
 
   // Booking Section
   booking: {
-    heading: "Book Your Session",
+    heading: "Book Your Consult",
     description: "Select a time that works for you. After booking, you'll receive a confirmation email with your Zoom link.",
     calendlyUrl: "https://calendly.com/tappingintojoy"
   },
