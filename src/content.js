@@ -8,7 +8,7 @@ export const photos = {
   serviceDiscovery: "white-rose.jpg",
   serviceIndividual: "white-orchid.jpg",
   servicePackage: "white-dogwood.jpg",
-  about: "sue-doherty.jpg"
+  about: "sue-doherty.jpg"d
 }
 
 export const content = {
@@ -16,8 +16,8 @@ export const content = {
   about: {
     heading: "Meet Sue Doherty",
     paragraphs: [
-      "Welcome! I'm Sue Doherty, a certified clinical EFT coach dedicated to helping you gain emotional regulation. I saw my limiting beliefs so clearly that I stepped into my power and found the peace within, and you can too.",
-      "My work as a neuroscientist at NIMH was foundational to linking my spiritual development with the neuroplasticity of the EFT technique. The tapping allowed me to release emotional blocks and solve realtioanl problems so I shine as a premium coach. Through our work together, you'll use the tools to down-regulate anxiety, overwhelm, fear or self-doubt so you too can transform."
+      "Welcome! I'm Sue Doherty, a certified clinical EFT coach.", 
+      "You can release your anxiety, recognize your patterns, and solve your relational issues."
     ]
   },
 
@@ -25,7 +25,7 @@ export const content = {
   hero: {
     tagline: "Emotional Freedom Through Gentle Healing",
     title: "Tap Into Joy",
-    description: "Release stress, anxiety, and emotional blocks with EFT Tapping. Experience the transformative power of this gentle, effective technique with certified practitioner Sue Doherty.",
+    description: " Experience the transformative power of this gentle, somatic-cognitive method  with a certified practitioner-neuroscientist, Sue Doherty.",
     primaryButton: "Book a Session",
     secondaryButton: "Learn More"
   },
@@ -33,25 +33,25 @@ export const content = {
   // Services
   services: {
     heading: "Services",
-    subheading: "Choose the container that best fits your needs.",
+    subheading: "Choose a time period that best fits your needs.",
     offerings: [
       {
         icon: photos.serviceDiscovery,
         title: "Discovery Consultation",
-        description: "A phone call to discuss your goals.",
-        price: "$500"
+        description: "A short phone consultaiotn to discuss your goals.",
+        price: "$100"
       },
       {
         icon: photos.serviceIndividual,
-        title: "3 months",
-        description: "A 3 month container to shift to peace, calm and joy.",
-        price: "$5,000."
+        title: "1 month",
+        description: "1 month to shift you to peace, calm and joy.",
+        price: "$400."
       },
       {
         icon: photos.servicePackage,
-        title: "6 months",
-        description: "A 6th month container to anchor your joy and stabilize your powerful new normal.",
-        price: "$10,000."
+        title: "3 months",
+        description: "A 3 month container to anchor your joy and stabilize your powerful new normal.",
+        price: "$1000."
       }
     ]
   },
