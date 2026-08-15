@@ -8,7 +8,7 @@ export const photos = {
   serviceDiscovery: "white-rose.jpg",
   serviceIndividual: "white-orchid.jpg",
   servicePackage: "white-dogwood.jpg",
-  about: "sue-doherty.jpg"d
+  about: "sue-doherty.jpg"
 }
 
 export const content = {
