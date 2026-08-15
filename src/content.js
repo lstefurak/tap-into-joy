@@ -17,7 +17,7 @@ export const content = {
     heading: "Meet Sue Doherty",
     paragraphs: [
       "Welcome! I'm Sue Doherty, a certified clinical EFT coach.", 
-      "You can release your anxiety, recognize your patterns, and solve your relational issues."
+      "release anxiety, recognize life patterns, and solve your relational issues."
     ]
   },
 
@@ -25,7 +25,7 @@ export const content = {
   hero: {
     tagline: "Emotional Freedom Through Gentle Healing",
     title: "Tap Into Joy",
-    description: " Experience the transformative power of this gentle, somatic-cognitive method  with a certified practitioner-neuroscientist, Sue Doherty.",
+    description: "Experience the transformative power of this gentle, somatic-cognitive method  with a certified practitioner-neuroscientist, Sue Doherty.",
     primaryButton: "Book a Session",
     secondaryButton: "Learn More"
   },
