@@ -16,7 +16,7 @@ export const content = {
   about: {
     heading: "Meet Sue Doherty",
     paragraphs: [
-      "Welcome! I'm Sue Doherty, a certified clinical EFT coach, MS in Chemistry and worked in neuropharmacology at NIH.", 
+      "Welcome! I'm Sue Doherty, a certified clinical EFT coach, with a MS in Chemistry who worked in neuropharmacology at NIH.", 
       "release anxiety, recognize life patterns, and solve your relational issues."
     ]
   },
