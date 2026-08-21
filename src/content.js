@@ -39,7 +39,7 @@ export const content = {
         icon: photos.serviceDiscovery,
         title: "Discovery Consultation",
         description: "A phone consultaiotn to discuss your goals.",
-        price: "$100"
+        price: "$50."
       },
       {
         icon: photos.serviceIndividual,
