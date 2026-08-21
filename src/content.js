@@ -39,19 +39,19 @@ export const content = {
         icon: photos.serviceDiscovery,
         title: "Discovery Consultation",
         description: "A phone consultaiotn to discuss your goals.",
-        price: "$50."
+        price: "free."
       },
       {
         icon: photos.serviceIndividual,
         title: "1 month",
-        description: "1 month to shift you to peace, calm and joy.",
+        description: "a one month reframe with weekly zoom calls to shift you to peace, calm and joy.",
         price: "$400."
       },
       {
         icon: photos.servicePackage,
         title: "3 months",
-        description: "A 3 month container to anchor your joy and stabilize your powerful new normal.",
-        price: "$1000."
+        description: "A 3 month stability refame to anchor your joy and stabilize your powerful new normal.",
+        price: "$1200."
       }
     ]
   },
