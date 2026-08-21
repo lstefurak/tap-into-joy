@@ -38,7 +38,7 @@ export const content = {
       {
         icon: photos.serviceDiscovery,
         title: "Discovery Consultation",
-        description: "A short phone consultaiotn to discuss your goals.",
+        description: "A phone consultaiotn to discuss your goals.",
         price: "$100"
       },
       {
