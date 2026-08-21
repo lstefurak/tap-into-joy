@@ -1,4 +1,4 @@
-uroplastic// Website Content Configuration
+// Website Content Configuration
 // Edit this file to update text content throughout the site
 
 // Photo filenames
