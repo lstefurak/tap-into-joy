@@ -2,10 +2,18 @@ name: Fix content typos
 
 # Safety net for edits to src/content.js.
 #
-# If a deploy fails, this repairs the file, checks that the site builds again,
-# pushes the fix and redeploys — so a stray quote mark doesn't take the site
-# down. If it can't fix the problem, it opens an issue explaining what's wrong
-# in plain language instead of guessing.
+# If a deploy is stopped, this repairs the file, checks the site really works
+# again, pushes the fix and redeploys — so a stray quote mark doesn't hold up
+# the site. If it can't fix the problem, it says so in plain language instead
+# of guessing.
+#
+# Note this only repairs text that stops the file being readable at all —
+# smart quotes, a missing quote mark, a missing comma. A leftover word that
+# happens to be readable but meaningless is caught by the lint and website
+# checks in the deploy workflow, which is what keeps a blank page off the site.
+#
+# Alerts (the issue and the email) are raised by the deploy workflow, not here.
+# This adds its findings to the same issue so everything stays in one place.
 
 on:
   workflow_run:
@@ -73,11 +81,24 @@ jobs:
           files: src/content.js
           write_changes: true
 
-      - name: Check the site still builds
+      - name: Cache the test browser
+        if: steps.guard.outputs.proceed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Get the test browser ready
+        if: steps.guard.outputs.proceed == 'true'
+        run: npx playwright install --with-deps chromium
+
+      # The same checks the deploy workflow runs. A repair is only worth
+      # pushing if the site genuinely works afterwards, not just builds.
+      - name: Check the site still works
         id: build
         if: steps.guard.outputs.proceed == 'true'
         continue-on-error: true
-        run: npm run build
+        run: npm run verify
 
       - name: Commit and push the fix
         id: push
@@ -107,13 +128,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_URL: ${{ github.event.workflow_run.html_url }}
         run: |
-          title="The website needs a small manual fix"
+          title="The website needs attention"
           report="$(cat repair-report.txt 2>/dev/null || echo 'No details available.')"
 
           cat > issue-body.md <<EOF
-          The website didn't rebuild after the last change to the text, and it couldn't
-          be repaired automatically. **The live site is still showing the previous
-          version, so visitors aren't seeing anything broken.**
+          The last change to the text couldn't be repaired automatically. **The live
+          site is still showing the previous version, so visitors aren't seeing
+          anything broken.**
 
           Here's what was found:
 

@@ -49,23 +49,83 @@ If you're just replacing a photo with a new one of the *same name* (e.g. uploadi
 
 ## If you make a mistake
 
-There's a safety net. If a change to `src/content.js` stops the site from
-rebuilding, a job runs automatically and tries to repair it — it fixes a missing
-quote mark, a missing comma, the curly “smart quotes” you get from pasting out of
-Word or email, and common misspellings. If the repair works, the fix is committed
-for you and the site redeploys. You don't have to do anything.
+There's a safety net, and it works in two stages.
 
-While all this is happening the live site keeps showing the previous version, so
-visitors never see a broken page.
+**Before anything is published**, your change is checked three ways: the code is
+read for obvious mistakes, the site is rebuilt, and then the rebuilt site is
+opened in a real browser to confirm the page actually appears. If any of that
+fails, **the change is simply not published** — the live site carries on showing
+the last version that worked, and visitors never see anything wrong.
 
-If it *can't* work out the fix, it opens an **Issue** on this repository
-explaining what's wrong in plain English, rather than guessing at your words. You
-can check for one under the **Issues** tab.
+If the problem is punctuation — a missing quote mark, a missing comma, the curly
+“smart quotes” you get from pasting out of Word or email, or a common
+misspelling — a repair is attempted automatically. If the repair works and the
+site passes all its checks again, the fix is committed for you and the site
+redeploys. You don't have to do anything.
+
+If it *can't* work out the fix, you'll get an **email** and an **Issue** on this
+repository explaining what's wrong in plain English, rather than it guessing at
+your words. You can find issues under the **Issues** tab.
+
+**After publishing**, the real public website is opened and checked one more
+time. If it isn't working, the change is undone automatically and the site is
+put back to the version that worked — usually within a minute or two — and you
+get told what happened.
+
+The short version: you cannot take the site down by mistyping the text. The
+worst that happens is your change doesn't go live and you get told why.
 
 ### For maintainers
 
-- Workflow: `.github/workflows/fix-content.yml`, triggered by a failed run of the
-  deploy workflow on `main`.
+**The gates.** `.github/workflows/deploy.yml` runs four jobs in order:
+
+| Job | What it does | If it fails |
+| --- | --- | --- |
+| `verify` | `npm run lint`, `npm run build`, then `npm run smoke` | Nothing is published; the live site is untouched |
+| `deploy` | Publishes `dist` to the `gh-pages` branch | Nothing reached visitors; re-run the job |
+| `live-check` | Opens the real public URL and checks it | The commit is reverted automatically and redeployed |
+| `recover` | Runs only on failure: reverts if needed, then alerts | — |
+
+Run the whole pre-deploy chain locally with **`npm run verify`**.
+
+**Why lint is in there.** `vite build` only proves the code *bundles*. A stray
+word left in `content.js` (`uroplastic// Website Content...`) is valid
+JavaScript — a bare identifier — so it builds and deploys perfectly, then throws
+`ReferenceError` in the browser and leaves a blank page. ESLint's `no-undef`
+catches that class in seconds. This is not hypothetical; it took the site down
+on 2026-08-21.
+
+**The website check**: `scripts/smoke-test.mjs` (run with `npm run smoke`, or
+`npm run smoke:live` against production). It serves the built files, opens them
+in headless Chromium, and fails if the page throws, comes out blank, has almost
+no text, or if part of the site itself 404s. Errors from *outside* services —
+the Calendly iframe, Google Fonts — are deliberately ignored so someone else's
+outage can't block your deploy. Against a live URL it takes `--expect-asset` and
+waits for that bundle to actually appear, cache-busting each poll, because Pages
+serves HTML with `max-age=600` and will otherwise hand back a stale page.
+
+**Alerts** go to a single issue titled *"The website needs attention"* (new
+failures are added as comments) plus an email. **Email needs three repository
+secrets before it will send anything** — until they exist the email step skips
+quietly and only the issue is raised:
+
+| Secret | Value |
+| --- | --- |
+| `MAIL_USERNAME` | The Gmail address sending the alert |
+| `MAIL_PASSWORD` | A Google [App Password](https://myaccount.google.com/apppasswords) — *not* the account password |
+| `ALERT_EMAIL` | Optional. Where alerts go; defaults to `tappingintojoy@gmail.com` |
+
+Add them under **Settings → Secrets and variables → Actions**.
+
+**Loop guards.** The auto-revert skips any commit already marked
+`[auto-revert]`, and the repair workflow skips any commit already marked
+`[auto-fix]`, so a bad fix can't push in circles. Because a push made by Actions
+doesn't start another workflow, both paths dispatch the deploy explicitly by
+name afterwards.
+
+**Repair (punctuation only).** `.github/workflows/fix-content.yml`, triggered by
+a failed run of the deploy workflow on `main`.
+
 - Punctuation repair: `scripts/fix-content.mjs` (run locally with `npm run fix:content`).
   It parses the file with `acorn`, and keeps a candidate fix only if it moves the
   parser further into the file — so it can't quietly mangle text. If it can't
@@ -75,8 +135,11 @@ can check for one under the **Issues** tab.
   like *Doherty*, *NIMH* and *Calendly* alone. The trade-off is that it won't catch
   every misspelling — invented or truncated words (`neuroplasticit`) pass through.
   If one ever gets "corrected" wrongly, add it to `.typos.toml`.
-- The workflow never pushes a change unless `npm run build` passes first, and it
-  won't retry a commit that's already marked `[auto-fix]`.
+- The workflow never pushes a repair unless `npm run verify` — lint, build *and*
+  the browser check — passes first, so a repair can't restore a file that parses
+  but still renders a blank page.
+- It only repairs text that stops the file being *readable*. A leftover word that
+  happens to be readable but meaningless is the lint gate's job, not this one.
 
 # React + Vite
 

@@ -9,9 +9,100 @@ on:
 
 permissions:
   contents: write
+  issues: write
+  actions: write
+
+# Never let two deploys race each other onto the live site.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  # Everything that has to be true BEFORE the site is allowed to go live.
+  # If any of this fails, nothing is published and visitors keep seeing the
+  # version that was already working.
+  verify:
+    name: Check the site before publishing
+    runs-on: ubuntu-latest
+    outputs:
+      asset: ${{ steps.asset.outputs.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Catches misspelled or leftover words in the code, which is what makes
+      # the page go blank. Cheap, and it runs before anything else.
+      - name: Look for mistakes in the code
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Cache the test browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Get the test browser ready
+        run: npx playwright install --with-deps chromium
+
+      # Opens the built site in a real browser and fails if the page is blank
+      # or the browser hits an error. A successful build does not prove this.
+      - name: Check the site actually appears
+        run: npm run smoke
+
+      - name: Remember which version we built
+        id: asset
+        run: |
+          name="$(grep -o 'assets/index-[^"]*\.js' dist/index.html | head -1)"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "Built version: $name"
+
+      - name: Save the built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+          retention-days: 7
+
+  deploy:
+    name: Publish
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      # The publish step runs git commands in the workspace, so it needs the
+      # repository present even though the files it publishes come from below.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get the built site
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+
+  # Confirms the real, public website is working -- not just the copy we built.
+  # This catches problems that only show up once GitHub is serving the files.
+  live-check:
+    name: Check the live website
+    needs: [verify, deploy]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,12 +117,195 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Cache the test browser
+        uses: actions/cache@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Get the test browser ready
+        run: npx playwright install --with-deps chromium
+
+      # Waits for the live site to actually start serving what we just
+      # published, then checks it. GitHub caches pages for ten minutes, so the
+      # check asks for a fresh copy rather than trusting what it is handed.
+      - name: Open the real website and check it
+        run: |
+          node scripts/smoke-test.mjs \
+            --url https://lstefurak.github.io/tap-into-joy/ \
+            --expect-asset "${{ needs.verify.outputs.asset }}" \
+            --wait 300
+
+  # Runs only when something above went wrong.
+  recover:
+    name: Put the site back and raise the alarm
+    needs: [verify, deploy, live-check]
+    if: always() && contains(needs.*.result, 'failure')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Work out what happened
+        id: what
+        env:
+          VERIFY: ${{ needs.verify.result }}
+          DEPLOY: ${{ needs.deploy.result }}
+          LIVE: ${{ needs.live-check.result }}
+        run: |
+          if [ "$VERIFY" = "failure" ]; then
+            echo "stage=before" >> "$GITHUB_OUTPUT"
+            echo "headline=The change was not published, and the website is untouched." >> "$GITHUB_OUTPUT"
+          elif [ "$DEPLOY" = "failure" ]; then
+            echo "stage=publish" >> "$GITHUB_OUTPUT"
+            echo "headline=The change passed its checks but could not be published." >> "$GITHUB_OUTPUT"
+          else
+            echo "stage=live" >> "$GITHUB_OUTPUT"
+            echo "headline=The change went live but the website is not working." >> "$GITHUB_OUTPUT"
+          fi
+
+      # Only the live stage needs undoing -- in every other case the site was
+      # never changed. Skip if the last commit is already an undo, so a bad
+      # revert cannot start a loop.
+      - name: Undo the change that broke the live site
+        id: revert
+        if: steps.what.outputs.stage == 'live'
+        run: |
+          if git log -1 --pretty=%s | grep -q '^\[auto-revert\]'; then
+            echo "The last change was already undone automatically. Not trying again."
+            echo "reverted=loop" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git revert --no-edit --no-commit "$GITHUB_SHA"; then
+            git commit -m "[auto-revert] Undo ${GITHUB_SHA:0:7}, which stopped the website working"
+            git push origin main
+            echo "reverted=yes" >> "$GITHUB_OUTPUT"
+          else
+            git revert --abort || true
+            echo "reverted=no" >> "$GITHUB_OUTPUT"
+          fi
+
+      # A push made by Actions does not start another workflow, so the undo
+      # above would sit there doing nothing unless we ask for a deploy by name.
+      - name: Publish the restored version
+        if: steps.revert.outputs.reverted == 'yes'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run "Deploy to GitHub Pages" --ref main
+
+      - name: Write the explanation
+        id: note
+        env:
+          HEADLINE: ${{ steps.what.outputs.headline }}
+          STAGE: ${{ steps.what.outputs.stage }}
+          REVERTED: ${{ steps.revert.outputs.reverted }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SUBJECT: ${{ github.event.head_commit.message }}
+        run: |
+          {
+            echo "$HEADLINE"
+            echo
+            echo "The change: ${SUBJECT:-(no description)}"
+            echo "Commit: ${GITHUB_SHA:0:7}"
+            echo
+
+            if [ "$STAGE" = "before" ]; then
+              cat <<'TEXT'
+          Good news: this was caught before anything reached visitors, so the
+          website is still showing the last version that worked. Nothing is
+          broken for anyone right now.
+
+          This is almost always a small slip in src/content.js -- a stray word
+          left behind, a missing quote mark, or a missing comma. Every piece of
+          text needs a quote mark at both the start and the end, and every line
+          in a list needs a comma after it except the last one.
+          TEXT
+            elif [ "$STAGE" = "publish" ]; then
+              cat <<'TEXT'
+          The change was fine, but publishing it failed -- usually a temporary
+          GitHub problem. The website is still showing the previous version.
+          Re-running the failed job from the link below normally fixes it.
+          TEXT
+            elif [ "$REVERTED" = "yes" ]; then
+              cat <<'TEXT'
+          The change has been undone automatically and the website is being put
+          back to the version that worked. That takes about a minute.
+
+          Nothing further is needed to get the site running, but the change
+          itself still needs looking at before it is tried again.
+          TEXT
+            elif [ "$REVERTED" = "loop" ]; then
+              cat <<'TEXT'
+          THIS ONE NEEDS A PERSON. An automatic undo was already tried and the
+          website is still not working, so it has stopped rather than keep
+          changing things. Please take a look.
+          TEXT
+            else
+              cat <<'TEXT'
+          THIS ONE NEEDS A PERSON. The change could not be undone automatically,
+          and the website is currently not working properly. Please take a look.
+          TEXT
+            fi
+
+            echo
+            echo "What the checks found: $RUN_URL"
+          } > note.md
+
+          cat note.md
+          {
+            echo "### What happened"
+            echo
+            echo '```'
+            cat note.md
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open an issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="The website needs attention"
+          existing="$(gh issue list --state open --search "in:title \"$title\"" \
+            --json number,title --jq "map(select(.title == \"$title\")) | .[0].number // empty")"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file note.md
+          else
+            gh issue create --title "$title" --body-file note.md
+          fi
+
+      # Email only works once the mail settings are added (see README). Until
+      # then this is skipped quietly -- the issue above is still the record.
+      - name: Are the mail settings set up?
+        id: mail
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: |
+          if [ -n "$MAIL_USERNAME" ] && [ -n "$MAIL_PASSWORD" ]; then
+            echo "ready=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=no" >> "$GITHUB_OUTPUT"
+            echo "No mail settings yet, so no email will be sent. The issue above still records this."
+          fi
+
+      # Best-effort: if the mail server is having a bad day, do not turn that
+      # into a second failure on top of the one we are already reporting.
+      - name: Send an email
+        if: steps.mail.outputs.ready == 'yes'
+        continue-on-error: true
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Tap Into Joy website
+          to: ${{ secrets.ALERT_EMAIL || 'tappingintojoy@gmail.com' }}
+          subject: "Tap Into Joy website: ${{ steps.what.outputs.headline }}"
+          body: file://note.md
