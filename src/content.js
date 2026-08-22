@@ -25,7 +25,7 @@ export const content = {
   hero: {
     tagline: "Emotional Freedom Through Gentle Healing",
     title: "Tap Into Joy",
-    description: "Experience the transformative power of this gentle, somatic-cognitive method  with a certified practitioner-neuroscientist, Sue Doherty.",
+    description: "Experience the transformative power of this gentle, somatic-cognitive method  with a clinically certified practitioner, Sue Doherty.",
     primaryButton: "Book a Session",
     secondaryButton: "Learn More"
   },
