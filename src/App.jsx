@@ -107,6 +107,7 @@ function App() {
           <div
             className="calendly-inline-widget"
             data-url={content.booking.calendlyUrl}
+            data-resize="true"
             style={{ minWidth: '320px', height: '700px' }}
           />
         </div>
