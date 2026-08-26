@@ -37,9 +37,9 @@ export const content = {
     offerings: [
       {
         icon: photos.serviceDiscovery,
-        title: "Discovery Consultation",
+        title: "Complimentary Consultation",
         description: "A phone consultaiotn to discuss your goals.",
-        price: "complimentary."
+        price: "free."
       },
       {
         icon: photos.serviceIndividual,
@@ -49,7 +49,7 @@ export const content = {
       },
       {
         icon: photos.servicePackage,
-        title: "3 seesion bundle",
+        title: "3 session bundle",
         description: "A 3 month stability refame to anchor your joy and stabilize your powerful new normal.",
         price: "$300."
       }
