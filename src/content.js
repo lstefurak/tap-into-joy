@@ -16,8 +16,8 @@ export const content = {
   about: {
     heading: "Meet Sue Doherty",
     paragraphs: [
-      "Welcome! I'm Sue Doherty, a certified clinical EFT coach, a neuroplasticity expert", 
-      "I coach you on how to release anxiety, recognize life patterns, and solve relational issues."
+      "Hi! I'm Sue Doherty, a certified clinical EFT coach, with expertise in neurochemistry", 
+      "I coach you on how to repattern your brain patterns to reach your potential."
     ]
   },
 
@@ -25,7 +25,7 @@ export const content = {
   hero: {
     tagline: "Emotional Freedom Through Gentle Healing",
     title: "Tap Into Joy",
-    description: "Experience the transformative power of this gentle, somatic-cognitive method  with a clinically certified practitioner, Sue Doherty.",
+    description: "Experience the transformative power of Tapping, a gentle, body-mind method  with a clinically certified practitioner, Sue Doherty.",
     primaryButton: "Book a Session",
     secondaryButton: "Learn More"
   },
@@ -44,13 +44,13 @@ export const content = {
       {
         icon: photos.serviceIndividual,
         title: "one session",
-        description: "a one month reframe with weekly zoom calls to shift you to peace, calm and joy.",
+        description: "a 75 minute zoom call to discover your patterns and goals.",
         price: "$125."
       },
       {
         icon: photos.servicePackage,
         title: "3 session bundle",
-        description: "A 3 month stability refame to anchor your joy and stabilize your powerful new normal.",
+        description: "A 3 budle seeesion, each 75 minutes to uncover the subtler levles and  refame your esperiences.",
         price: "$300."
       }
     ]
