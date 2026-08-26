@@ -50,7 +50,7 @@ export const content = {
       {
         icon: photos.servicePackage,
         title: "3 session bundle",
-        description: "A 3 session bundle, each 75 minutes, to uncover your patterns and refame your esperiences.",
+        description: "A 3 session bundle, each 75 minutes, to uncover your patterns and refame your experiences.",
         price: "$300."
       }
     ]
