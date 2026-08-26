@@ -17,7 +17,7 @@ export const content = {
     heading: "Meet Sue Doherty",
     paragraphs: [
       "Hi! I'm Sue Doherty, a certified clinical EFT coach, with expertise in neurochemistry", 
-      "I coach you on how to repattern your brain patterns to reach your potential."
+      "I coach you on how to repattern your brain to live your best self."
     ]
   },
 
