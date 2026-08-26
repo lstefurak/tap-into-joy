@@ -44,13 +44,13 @@ export const content = {
       {
         icon: photos.serviceIndividual,
         title: "one session",
-        description: "a 75 minute zoom call to discover goals.",
+        description: "one 75 minute zoom call to discover and clarify your goals.",
         price: "$125."
       },
       {
         icon: photos.servicePackage,
         title: "3 session bundle",
-        description: "A 3 sedsion bundle, each 75 minutes, to uncover your patterns and refame your esperiences.",
+        description: "A 3 session bundle, each 75 minutes, to uncover your patterns and refame your esperiences.",
         price: "$300."
       }
     ]
